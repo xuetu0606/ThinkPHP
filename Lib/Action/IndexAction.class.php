@@ -12,7 +12,9 @@ class IndexAction extends Action {
 		echo '<br/>';
 		echo 'config URL_MODEL : '.C('URL_MODEL');
 		echo '<br/>';
-		echo U('Index/check',array('id'=>1,'name'=>'xuetu'),'shtml',false,'localhost');
+		echo U('Index/check',array('id'=>1,'name'=>'xuetu'),'html',false,'localhost');
+        echo '<br/>';
+
     }
     public function check(){
     	$id = $_GET['id'];
@@ -20,5 +22,11 @@ class IndexAction extends Action {
     	echo 'id is : '.$id;
     	echo '<br/>';
     	echo 'name is : '.$name;
+    }
+    /**
+     * 测试自定义函数
+     */
+    public function test(){
+        showHello();
     }
 }

@@ -83,12 +83,14 @@
 	②   开启Apache重写模块
 		LoadModule rewrite_module modules/mod_rewrite.so
 	③   .htaccess文件
-		<Ifmodule mod_rewrite.c>
-			#开启重写引擎
+		<IfModule mod_rewrite.c>
 			RewriteEngine on
-			#设置重写判断条件
 			RewriteCond %{REQUEST_FILENAME} !-d
 			RewriteCond %{REQUEST_FILENAME} !-f
-			#输入重写规则
-			RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
-		</Ifmodule>
+			Rewritebase /index.php
+			RewriteRule ^(.*)$ /index.php?/$1 [L]
+		</IfModule>
+8.函数库
+	①默认函数
+		C(name[,value]);
+		读取或设置配置文件
