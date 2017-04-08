@@ -1,0 +1,94 @@
+	ThinkPHP笔记
+1.首先将框架放在根目录
+2.创建PHP文件name.php
+	<?php
+		//项目名称
+		define('APP_NAME','name');
+		//项目路径
+		define('APP_PATH','./name/');
+		//删除缓存(项目上线时要取消)
+		define('APP_DEBUG',true);
+		require('./ThinkPHP/ThinkPHP.php');
+3.然后重新访问name.php,框架会自动产生一个文件夹该文件夹就是代表name.php(以name.php为入口文件)的模块
+	①
+		name 存放该模块
+			common 当前项目的公共函数
+			Conf 存放当前项目的配置文件
+			Lang 存放当前项目的语言包
+			Lib 存放当前项目的控制器和模型
+				Action 存放控制器
+					IndexAction.class.php 控制器(
+					文件命名模式是NameAction.class.php
+					类名命名模式是NameAction)
+				Bechavior ThinkPHP行为管理目录
+				Model 模型
+				Widget 项目组件
+			Runtime 存放当前项目的运行时的文件
+				Cache 模板缓存
+				Data 数据目录
+				Logs 日志
+				Temp 数据缓存
+				~runtime.php 编译后加载文件
+			Tpl 存放当前项目的模板文件
+	②
+		M --> Lib
+		V --> Tpl
+		C --> Lib
+4.打开 IndexAction.class.php 文件经过的步骤
+	①加载 ThinkPHP.php 文件
+		require ('./ThinkPHP/ThinkPHP.php');
+	②加载核心文件 ./ThinkPHP/Lib/core
+		
+	③加载项目的文件 分析URL 调用相关控制器
+		m --> model 模块 控制器
+			$module = isset($_GET['m']) ? $_GET['m'] : 'index';
+		a --> action 方法 页面
+			$action = isset($_GET['a']) ? $_GET['a'] : 'index';
+	④初始化配置
+			$my = new $module();
+			$my->$action();
+5.文件位置
+	①框架配置文件位置
+		ThinkPHP/Conf/convention.php
+	②模块配置文件位置
+		name/Conf/config.php
+6.使用配置文件
+	①使用配置项
+	C('property_name');
+	②引入其他配置文件(自定义的配置文件会自动重新加载,不推荐)
+	'LOAD_EXT_CONFIG'=>'config_name'
+7.ThinkPHP的URL_MODEL
+	①   /**
+		 * URL_MODEL
+		 * 0. 普通模式
+		 * http://localhost/test_tp/admin.php?m=Index&a=test&id=1
+		 * 1. 默认模式 pathinfo 模式
+		 * http://localhost/test_tp/admin.php/Index/test/id/1.html
+		 * 2. 重写模式
+		 * http://localhost/test_tp/Index/test/id/1.html
+		 * 3. 兼容模式
+		 * http://localhost/test_tp/admin.php?s=/Index/test/id/1.html
+		 */
+		echo C('URL_MODEL').'<br/>';
+		/**
+		 * U('控制器/方法名',array('id'=>1),'html...',true/false,'localhost');
+		 *   控制器/方法名 
+		 *   数组参数
+		 *   链接后缀
+		 *   是否跳转
+		 *   网站域名
+		 *   一般只用 项目名/数组参数 其它不常用
+		 */
+		echo U('Index/test',array('id'=>1),'html',false,'localhost').'<br/>';
+	②   开启Apache重写模块
+		LoadModule rewrite_module modules/mod_rewrite.so
+	③   .htaccess文件
+		<Ifmodule mod_rewrite.c>
+			#开启重写引擎
+			RewriteEngine on
+			#设置重写判断条件
+			RewriteCond %{REQUEST_FILENAME} !-d
+			RewriteCond %{REQUEST_FILENAME} !-f
+			#输入重写规则
+			RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+		</Ifmodule>
