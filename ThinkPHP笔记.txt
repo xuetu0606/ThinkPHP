@@ -94,3 +94,82 @@
 	①默认函数
 		C(name[,value]);
 		读取或设置配置文件
+		U('控制器/方法名',array('id'=>1),'html...',true/false,'localhost');
+		生成指定的控制器函数的URL
+		dump($array);
+		美化遍历输出数组
+	②自定义函数
+		创建/Common/common.php文件
+		在该文件中定义function
+9.模板(视图)
+	①创建视图文件
+		在Tpl文件夹中创建与控制器相同的文件夹并在其中创建与控制器中函数名相同的html文件
+	②$this->display('控制器/方法名');
+		加载视图
+	③将数据显示在视图中
+		$name = 'xuetu';
+        $this->name=$name;
+        $this->后的名字要与视图中的名字相同
+        $this->assign('变量名',变量值);
+        $this->assign(array('id'=>1));
+        assign()可以放单个变量也可以放一个数组
+    ④模板引擎
+    	比较符号
+	    	eq =
+	    	neq !=
+	    	gt >
+	    	egt >=
+	    	lt <
+	    	elt <=
+	    	heq ===
+	    	nheq !===
+		比较标签
+			<比较标签 name='变量名' value='比较的值' ><比较标签/>
+		区间判断
+			in
+			notin
+	    实际应用
+	    	<p>PHP数组形式</p>
+			{$user['id']}
+			{$user['name']}
+			<p>Java属性模式</p>
+			{$user.age}
+			<p>设置当值为空时设置默认值</p>
+			{$user.sex|default='男'}
+			<p>模板运算</p>
+			{$user['age']+1}
+			<p>模板调用函数</p>
+			{//进行MD5加密,并且只截取0到5个字符串}
+			{$user['name']|md5|substr=0,5}
+			<p>模板调用函数</p>
+			{//时间戳转换为日期格式,第二个参数必须添加###}
+			{$user['now']|date='Y-m-d H:i:s',###}
+			<p>ThinkPHP自带的系统变量</p>
+			{$Think.now}
+			<p>当前ThinkPHP版本</p>
+			{$Think.version}
+			<p>当前域名</p>
+			{$Think.server.http_host}
+			<p>循环遍历数组 volist</p>
+			<p>截取 offset 头 length 长</p>
+			<p>当数组为空时 empty 设置默认显示的值</p>
+			<volist name="users" id="data" offset="1" length="2" empty="没有数据">
+				{$data['id']}<br/>
+				{$data['name']}<br/>
+				{$data['age']}<br/>
+			</volist>
+			<p>循环遍历数组 foreach 没有截取</p>
+			<foreach name="users" item="data">
+				{$data['id']}<br/>
+				{$data['name']}<br/>
+				{$data['age']}<br/>
+			</foreach>
+			<p>for循环</p>
+			<for start='1' end="12" comparison="elt" name="i">
+				{$i}<br/>
+			</for>
+			<p>if判断</p>
+			<if condition="$num gt 10">num大于10
+				<elseif condition="$num lt 10"/>num小于10
+				<else/>num等于10
+			</if>
